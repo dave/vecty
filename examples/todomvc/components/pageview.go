@@ -40,9 +40,13 @@ func (p *PageView) onNewItemTitleInput(event *vecty.Event) {
 	p.ReconcileBody()
 }
 
-
 func (p *PageView) onMouseOverAddBox(event *vecty.Event) {
 	p.newItemTitle = p.newItemTitle + "a"
+	p.ReconcileBody()
+}
+
+func (p *PageView) onMouseOverAddBox1(event *vecty.Event) {
+	p.newItemTitle = "z" + p.newItemTitle
 	p.ReconcileBody()
 }
 
@@ -143,6 +147,14 @@ func (p *PageView) renderFooter() vecty.Component {
 func (p *PageView) renderInfo() vecty.Component {
 	return elem.Footer(
 		prop.Class("info"),
+
+		elem.Div(
+			vecty.Text("Add to start"),
+			vecty.Style("background-color", "#0000ff"),
+			vecty.Style("width", "100px"),
+			vecty.Style("height", "100px"),
+			event.MouseEnter(p.onMouseOverAddBox1),
+		),
 
 		elem.Div(
 			vecty.Text("Add to end"),
