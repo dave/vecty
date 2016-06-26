@@ -1,6 +1,6 @@
 package actions
 
-import "github.com/gopherjs/vecty/examples/todomvc/store/model"
+import "github.com/davelondon/vecty/examples/todomvc/store/model"
 
 type ReplaceItems struct {
 	Items []*model.Item

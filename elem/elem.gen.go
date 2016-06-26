@@ -5,7 +5,7 @@
 // Generated from "HTML element reference" by Mozilla Contributors, https://developer.mozilla.org/en-US/docs/Web/HTML/Element, licensed under CC-BY-SA 2.5.
 package elem
 
-import "github.com/gopherjs/vecty"
+import "github.com/davelondon/vecty"
 
 // The HTML Anchor Element (<a>) defines a hyperlink to a location on the same page or any other page on the Web. It can also be used (in an obsolete way) to create an anchor point—a destination for hyperlinks within the content of a page, so that links aren't limited to connecting simply to the top of a page.
 //
