@@ -108,7 +108,28 @@ func (e *Element) Reconcile(oldComp Component) {
 				oldValue = oldElement.Properties[name]
 			}
 			if value != oldValue {
-				e.node.Set(name, value)
+				if name == "value" {
+					start := e.node.Get("selectionStart").Int()
+					end := e.node.Get("selectionEnd").Int()
+
+					if end != start {
+						// we have a selected block. Only preserve the selection
+						// if the selected text is unchanged.
+						if oldValue.(string)[start:end] != value.(string)[start:end] {
+							// if the selected text would change, we should
+							// place the cursor without a selection at the
+							// position of the start of the selection.
+							end = start
+						}
+					}
+
+					e.node.Set(name, value)
+
+					e.node.Call("setSelectionRange", start, end)
+
+				} else {
+					e.node.Set(name, value)
+				}
 			}
 		}
 		for name := range oldElement.Properties {
