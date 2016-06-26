@@ -100,7 +100,34 @@ func (e *Element) Reconcile(oldComp Component) {
 		for name, value := range e.Properties {
 			oldValue := oldElement.Properties[name]
 			if value != oldValue || name == "value" || name == "checked" {
-				e.node.Set(name, value)
+				if name == "value" {
+
+					isFocussed := js.Global.Get("document").Get("activeElement") == e.node &&
+						js.Global.Get("document").Call("hasFocus").Bool()
+
+					if isFocussed {
+
+						// If the element has focus, only update the value if the old value matches
+						// the current value. This prevents the value property being set while
+						// the user is typing.
+						currentValue := e.node.Get("value").String()
+
+						if value != oldValue && oldValue == currentValue {
+							// We preserve the selection start and end points to prevent the cursor
+							// from moving.
+							start := e.node.Get("selectionStart").Int()
+							end := e.node.Get("selectionEnd").Int()
+							e.node.Set(name, value)
+							e.node.Call("setSelectionRange", start, end)
+						}
+
+					} else {
+						e.node.Set(name, value)
+					}
+
+				} else {
+					e.node.Set(name, value)
+				}
 			}
 		}
 		for name := range oldElement.Properties {
