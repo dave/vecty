@@ -10,5 +10,8 @@ func replaceNode(newNode, oldNode *js.Object) {
 	if newNode == oldNode {
 		return
 	}
+	if oldNode.Get("parentNode") == (*js.Object)(nil) {
+		return
+	}
 	oldNode.Get("parentNode").Call("replaceChild", newNode, oldNode)
 }
