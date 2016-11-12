@@ -43,6 +43,7 @@ func (l *EventListener) Apply(h *HTML) {
 
 // Event represents a DOM event.
 type Event struct {
+	*js.Object
 	Target *js.Object
 }
 
