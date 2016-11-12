@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"sort"
+
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -131,6 +133,7 @@ func (m ClassMap) Apply(h *HTML) {
 			classes = append(classes, name)
 		}
 	}
+	sort.Strings(classes)
 	Property("className", strings.Join(classes, " ")).Apply(h)
 }
 
