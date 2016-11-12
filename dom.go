@@ -15,6 +15,10 @@ type Core struct {
 // Context implements the Component interface.
 func (c *Core) Context() *Core { return c }
 
+func (e *Core) Unmount() {
+	e.prevRender.Unmount()
+}
+
 // Component represents a single visual component within an application. To
 // define a new component simply implement the Render method and embed the Core
 // struct:
@@ -35,6 +39,10 @@ type Component interface {
 	// Context returns the components context, which is used internally by
 	// Vecty in order to store the previous component render for diffing.
 	Context() *Core
+}
+
+type Unmounter interface {
+	Unmount()
 }
 
 // ComponentOrHTML represents one of:
@@ -72,6 +80,14 @@ type HTML struct {
 	properties      map[string]interface{}
 	eventListeners  []*EventListener
 	children        []ComponentOrHTML
+}
+
+func (e *HTML) Unmount() {
+	for _, c := range e.children {
+		if u, ok := c.(Unmounter); ok {
+			u.Unmount()
+		}
+	}
 }
 
 func (h *HTML) restoreText(prev *HTML) {
@@ -256,6 +272,7 @@ func Rerender(c Component) {
 		return
 	}
 	if prevRender != nil {
+		prevRender.Unmount()
 		replaceNode(nextRender.Node, prevRender.Node)
 	}
 }
