@@ -48,6 +48,10 @@ type Unmounter interface {
 	Unmount()
 }
 
+type Unmounter interface {
+	Unmount()
+}
+
 // ComponentOrHTML represents one of:
 //
 //  Component
@@ -94,6 +98,14 @@ type HTML struct {
 //	}
 //	return fmt.Sprint(e.tag, " ", e.index)
 //}
+
+func (e *HTML) Unmount() {
+	for _, c := range e.children {
+		if u, ok := c.(Unmounter); ok {
+			u.Unmount()
+		}
+	}
+}
 
 func (e *HTML) Unmount() {
 	for _, c := range e.children {
