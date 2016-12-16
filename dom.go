@@ -10,13 +10,14 @@ import (
 // core/central struct which all Component implementations should embed.
 type Core struct {
 	prevRender *HTML
+	deleted    bool
 }
 
 // Context implements the Component interface.
 func (c *Core) Context() *Core { return c }
 
-func (e *Core) Unmount() {
-	e.prevRender.Unmount()
+func (c *Core) Unmount() {
+	c.prevRender.Unmount()
 }
 
 // Component represents a single visual component within an application. To
@@ -39,6 +40,8 @@ type Component interface {
 	// Context returns the components context, which is used internally by
 	// Vecty in order to store the previous component render for diffing.
 	Context() *Core
+
+	//Desc() string
 }
 
 type Unmounter interface {
@@ -80,7 +83,17 @@ type HTML struct {
 	properties      map[string]interface{}
 	eventListeners  []*EventListener
 	children        []ComponentOrHTML
+	//index           int
 }
+
+//var index int
+
+//func (e *HTML) Desc() string {
+//	if e == nil {
+//		return "nil"
+//	}
+//	return fmt.Sprint(e.tag, " ", e.index)
+//}
 
 func (e *HTML) Unmount() {
 	for _, c := range e.children {
@@ -157,7 +170,9 @@ func (h *HTML) restoreHTML(prev *HTML) {
 		prevChild := prev.children[i]
 		prevChildRender, ok := prevChild.(*HTML)
 		if !ok {
-			prevChildRender = prevChild.(Component).Context().prevRender
+			c := prevChild.(Component).Context()
+			prevChildRender = c.prevRender
+			c.deleted = true
 		}
 		if doRestore(prevChild, nextChild, prevChildRender, nextChildRender) {
 			continue
@@ -168,15 +183,35 @@ func (h *HTML) restoreHTML(prev *HTML) {
 		prevChild := prev.children[i]
 		prevChildRender, ok := prevChild.(*HTML)
 		if !ok {
-			prevChildRender = prevChild.(Component).Context().prevRender
+			c := prevChild.(Component).Context()
+			prevChildRender = c.prevRender
+			c.deleted = true
 		}
+		prevChildRender.deleteChildren()
 		removeNode(prevChildRender.Node)
+
+		//if u, ok := prevChild.(Unmounter); ok {
+		//	go u.Unmount()
+		//}
+	}
+}
+
+func (h *HTML) deleteChildren() {
+	for _, child := range h.children {
+		html, ok := child.(*HTML)
+		if !ok {
+			c := child.(Component).Context()
+			html = c.prevRender
+			c.deleted = true
+		}
+		html.deleteChildren()
 	}
 }
 
 // Restore implements the Restorer interface.
 func (h *HTML) Restore(old ComponentOrHTML) {
 	for _, l := range h.eventListeners {
+		l := l
 		l.wrapper = func(jsEvent *js.Object) {
 			if l.callPreventDefault {
 				jsEvent.Call("preventDefault")
@@ -240,8 +275,10 @@ func (h *HTML) Restore(old ComponentOrHTML) {
 // function is not used directly but rather the elem subpackage (which is type
 // safe) is used instead.
 func Tag(tag string, m ...MarkupOrComponentOrHTML) *HTML {
+	//index++
 	h := &HTML{
 		tag: tag,
+		//index: index,
 	}
 	for _, m := range m {
 		apply(m, h)
@@ -265,6 +302,9 @@ func Text(text string, m ...MarkupOrComponentOrHTML) *HTML {
 // Rerender causes the body of the given component (i.e. the HTML returned by
 // the Component's Render method) to be re-rendered and subsequently restored.
 func Rerender(c Component) {
+	if c.Context().deleted {
+		return
+	}
 	prevRender := c.Context().prevRender
 	nextRender := doRender(c)
 	var prevComponent Component = nil // TODO
