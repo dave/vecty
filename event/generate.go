@@ -181,7 +181,7 @@ func main() {
 // CC-BY-SA 2.5.
 package event
 
-import "github.com/davelondon/vecty"
+import "github.com/dave/vecty"
 `)
 
 	for _, name := range names {

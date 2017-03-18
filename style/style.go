@@ -3,7 +3,7 @@ package style
 import (
 	"strconv"
 
-	"github.com/davelondon/vecty"
+	"github.com/dave/vecty"
 )
 
 type Size string

@@ -1,6 +1,6 @@
 package prop
 
-import "github.com/davelondon/vecty"
+import "github.com/dave/vecty"
 
 type InputType string
 

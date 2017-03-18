@@ -1,10 +1,10 @@
 package store
 
 import (
-	"github.com/davelondon/vecty/examples/todomvc/actions"
-	"github.com/davelondon/vecty/examples/todomvc/dispatcher"
-	"github.com/davelondon/vecty/examples/todomvc/store/model"
-	"github.com/davelondon/vecty/storeutil"
+	"github.com/dave/vecty/examples/todomvc/actions"
+	"github.com/dave/vecty/examples/todomvc/dispatcher"
+	"github.com/dave/vecty/examples/todomvc/store/model"
+	"github.com/dave/vecty/storeutil"
 )
 
 var (

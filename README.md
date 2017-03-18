@@ -31,7 +31,7 @@ Current Status
 
 -	APIs will change.
 -	The scope of Vecty is only ~80% defined currently.
--	There are a number of important [open issues](https://github.com/davelondon/vecty/issues).
+-	There are a number of important [open issues](https://github.com/dave/vecty/issues).
 
 Community
 =========

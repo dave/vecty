@@ -7,7 +7,7 @@
 // CC-BY-SA 2.5.
 package elem
 
-import "github.com/davelondon/vecty"
+import "github.com/dave/vecty"
 
 // The HTML Anchor Element (<a>) defines a hyperlink to a location on the same
 // page or any other page on the Web. It can also be used (in an obsolete way)

@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/davelondon/vecty"
-	"github.com/davelondon/vecty/examples/todomvc/actions"
-	"github.com/davelondon/vecty/examples/todomvc/components"
-	"github.com/davelondon/vecty/examples/todomvc/dispatcher"
-	"github.com/davelondon/vecty/examples/todomvc/store"
-	"github.com/davelondon/vecty/examples/todomvc/store/model"
+	"github.com/dave/vecty"
+	"github.com/dave/vecty/examples/todomvc/actions"
+	"github.com/dave/vecty/examples/todomvc/components"
+	"github.com/dave/vecty/examples/todomvc/dispatcher"
+	"github.com/dave/vecty/examples/todomvc/store"
+	"github.com/dave/vecty/examples/todomvc/store/model"
 	"github.com/gopherjs/gopherjs/js"
 )
 

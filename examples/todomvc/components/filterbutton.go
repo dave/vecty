@@ -1,14 +1,14 @@
 package components
 
 import (
-	"github.com/davelondon/vecty"
-	"github.com/davelondon/vecty/elem"
-	"github.com/davelondon/vecty/event"
-	"github.com/davelondon/vecty/examples/todomvc/actions"
-	"github.com/davelondon/vecty/examples/todomvc/dispatcher"
-	"github.com/davelondon/vecty/examples/todomvc/store"
-	"github.com/davelondon/vecty/examples/todomvc/store/model"
-	"github.com/davelondon/vecty/prop"
+	"github.com/dave/vecty"
+	"github.com/dave/vecty/elem"
+	"github.com/dave/vecty/event"
+	"github.com/dave/vecty/examples/todomvc/actions"
+	"github.com/dave/vecty/examples/todomvc/dispatcher"
+	"github.com/dave/vecty/examples/todomvc/store"
+	"github.com/dave/vecty/examples/todomvc/store/model"
+	"github.com/dave/vecty/prop"
 )
 
 type FilterButton struct {
